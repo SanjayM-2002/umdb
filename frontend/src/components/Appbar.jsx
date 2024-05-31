@@ -1,17 +1,19 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PrimaryButton from './PrimaryButton';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from '../atoms/userAtom';
 
 const AppBar = () => {
   const navigate = useNavigate();
 
   const currentUser = useRecoilValue(userAtom);
+  const setCurrentUser = useSetRecoilState(userAtom);
   const fullname = currentUser?.fullname;
   const handleSignout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('firstName');
+    localStorage.removeItem('currentUser');
+    setCurrentUser(null);
     navigate('/signin');
   };
 

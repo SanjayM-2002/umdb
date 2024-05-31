@@ -5,13 +5,15 @@ const MovieCard = ({ movie, onDelete }) => {
     <div className='border rounded shadow-md p-4 transition-transform transform hover:scale-105'>
       <div className='aspect-w-2 aspect-h-3 mb-4'>
         <img
-          src={movie.Poster}
-          alt={movie.Title}
-          className='object-cover rounded w-full h-full'
+          src={movie.poster}
+          alt={movie.title}
+          className='object-cover rounded w-full h-90'
         />
       </div>
-      <h2 className='text-xl font-bold mb-2'>{movie.Title}</h2>
-      <h4 className='text-xl font-semibold mb-2'>{movie.Year}</h4>
+      <h2 className='text-xl font-bold mb-2'>{movie.title}</h2>
+      <h4 className='text-xl font-semibold mb-2'>
+        {movie.released.split(' ')[2]}
+      </h4>
       <div className='flex justify-between'>
         <button className='bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors duration-300'>
           View Details

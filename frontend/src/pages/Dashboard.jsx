@@ -18,7 +18,9 @@ const Dashboard = () => {
   if (!searchResult && currentMovie) {
     setSearchResult(currentMovie);
   }
-
+  const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  const [addToListDisabled, setAddToListDisabled] = useState(false);
+  const token = localStorage.getItem('token');
   const handleSearch = async () => {
     setLoading(true);
     setError(null);
@@ -42,6 +44,33 @@ const Dashboard = () => {
       setCurrentMovie(data);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddToList = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${BACKEND_BASE_URL}/api/v1/movies/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(searchResult),
+      });
+
+      const data = await response.json();
+      console.log('response is: ', data);
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      setAddToListDisabled(true);
+    } catch (error) {
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -197,7 +226,13 @@ const Dashboard = () => {
                     </div>
                   ))}
                 </div>
-                <button className='bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors duration-300'>
+                <button
+                  onClick={handleAddToList}
+                  disabled={addToListDisabled}
+                  className={`bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors duration-300 ${
+                    addToListDisabled ? 'opacity-30 cursor-not-allowed' : ''
+                  }`}
+                >
                   Add to list
                 </button>
               </div>

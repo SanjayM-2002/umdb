@@ -52,7 +52,7 @@ const addMovieToSavedList = async (req, res) => {
     }
     user.savedMovies.push(movie._id);
     await user.save();
-
+    console.log('movie is added');
     return res
       .status(200)
       .send({ message: 'Movie added to saved list', movie });
