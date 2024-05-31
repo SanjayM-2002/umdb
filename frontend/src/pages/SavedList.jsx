@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MovieCard from '../components/MovieCard';
 import { RotatingLines } from 'react-loader-spinner';
+import MovieDetailsModal from '../components/MovieDetailsModal';
 
 const SavedList = () => {
   const [savedMovies, setSavedMovies] = useState([]);
@@ -8,6 +9,7 @@ const SavedList = () => {
   const [error, setError] = useState(null);
   const token = localStorage.getItem('token');
   const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     async function fetchSavedMovies() {
@@ -60,6 +62,15 @@ const SavedList = () => {
       setLoading(false);
     }
   };
+
+  const handleViewDetails = (movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedMovie(null);
+  };
+
   console.log('saved movies is: ', savedMovies);
   if (loading) {
     return (
@@ -92,9 +103,13 @@ const SavedList = () => {
             key={movie._id}
             movie={movie}
             onDelete={() => handleDeleteMovie(movie.imdbID)}
+            onViewDetails={() => handleViewDetails(movie)}
           />
         ))}
       </div>
+      {selectedMovie && (
+        <MovieDetailsModal movie={selectedMovie} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };
