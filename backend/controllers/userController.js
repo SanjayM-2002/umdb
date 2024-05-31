@@ -43,7 +43,7 @@ const signup = async (req, res) => {
     // console.log('user id is: ', newUser._id);
     const token = jwt.sign({ userId: newUser._id }, jwtSecret);
     const { password, ...messageWithoutPassword } = newUser.toObject();
-    res.status(201).json({ message: messageWithoutPassword, token });
+    res.status(201).json({ details: messageWithoutPassword, token });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
     return;
@@ -72,10 +72,11 @@ const signin = async (req, res) => {
       return res.status(404).json({ error: 'Wrong password' });
     }
     const token = jwt.sign({ userId: userExists._id }, jwtSecret);
+    const { password, ...messageWithoutPassword } = userExists.toObject();
     res.status(200).json({
-      message: 'User signed in successfully',
+      details: messageWithoutPassword,
       token,
-      fullname: userExists.fullname,
+      message: 'Logged in successfully',
     });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
