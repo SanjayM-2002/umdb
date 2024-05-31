@@ -28,11 +28,11 @@ const Dashboard = () => {
     let apiUrl = '';
     try {
       if (searchType === 'title') {
-        apiUrl = `http://www.omdbapi.com/?apikey=${API_KEY}&t=${title}${
+        apiUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&t=${title}${
           year ? `&y=${year}` : ''
         }`;
       } else if (searchType === 'imdbID') {
-        apiUrl = `http://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}`;
+        apiUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}`;
       }
 
       const response = await fetch(apiUrl);
